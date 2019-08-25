@@ -1,0 +1,9 @@
+target/
+### IntelliJ IDEA ###
+.idea
+static/
+_log/
+*.iws
+*.iml
+*.ipr
+*.class
