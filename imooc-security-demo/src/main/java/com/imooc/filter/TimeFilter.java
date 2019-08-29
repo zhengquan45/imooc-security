@@ -12,7 +12,6 @@ import java.io.IOException;
  * @date 2019/8/24
  */
 @Slf4j
-@Component
 public class TimeFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

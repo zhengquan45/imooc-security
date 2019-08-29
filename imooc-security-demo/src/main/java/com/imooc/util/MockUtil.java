@@ -1129,8 +1129,8 @@ public class MockUtil {
      * @author "lixingwu"
      */
 //    public static String pick(List<String> list) throws ScriptException {
-//        String template = Joiner.on(",").join(list);
-//        String format = StrFormatter.format("Random.pick({})",template);
+//        String templates = Joiner.on(",").join(list);
+//        String format = StrFormatter.format("Random.pick({})",templates);
 //        Object random = mockRandom(format);
 //        return Convert.toStr(random);
 //    }

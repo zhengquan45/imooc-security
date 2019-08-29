@@ -20,15 +20,12 @@ import java.util.List;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private TimeFilter timeFilter;
-
-    @Autowired
     private TimeIntercepter timeIntercepter;
 
     @Bean
     public FilterRegistrationBean timeFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setFilter(timeFilter);
+        registrationBean.setFilter(new TimeFilter());
         List<String> urls = CollUtil.newArrayList();
         urls.add("/*");
         registrationBean.setUrlPatterns(urls);
