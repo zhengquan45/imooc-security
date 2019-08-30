@@ -28,8 +28,15 @@ public class ValidateCodeController {
 
     @GetMapping("/code/image")
     public void createCode(HttpServletRequest request, HttpServletResponse response)throws Exception{
-        ImageCode imageCode = imageCodeGenerator.generate(new ServletWebRequest(request));
+        ImageCode imageCode = (ImageCode) imageCodeGenerator.generate(new ServletWebRequest(request));
         sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,imageCode);
         ImageIO.write(imageCode.getImage(),"JPEG",response.getOutputStream());
+    }
+
+    @GetMapping("/code/sms")
+    public void createSmsCode(HttpServletRequest request, HttpServletResponse response)throws Exception{
+        ValidateCode smsCode = smsCodeGenerator.generate(new ServletWebRequest(request));
+        sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,smsCode);
+        //todo 发短信验证码
     }
 }
