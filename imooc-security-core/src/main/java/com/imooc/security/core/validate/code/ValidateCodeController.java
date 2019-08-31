@@ -1,9 +1,6 @@
 package com.imooc.security.core.validate.code;
 
-import cn.hutool.captcha.AbstractCaptcha;
-import cn.hutool.captcha.CaptchaUtil;
-import com.imooc.security.core.properties.SecurityProperties;
-import jdk.nashorn.internal.objects.annotations.Setter;
+import com.imooc.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -26,6 +23,12 @@ public class ValidateCodeController {
     @Autowired
     private ValidateCodeGenerator imageCodeGenerator;
 
+    @Autowired
+    private ValidateCodeGenerator smsCodeGenerator;
+
+    @Autowired
+    private SmsCodeSender smsCodeSender;
+
     @GetMapping("/code/image")
     public void createCode(HttpServletRequest request, HttpServletResponse response)throws Exception{
         ImageCode imageCode = (ImageCode) imageCodeGenerator.generate(new ServletWebRequest(request));
@@ -37,6 +40,7 @@ public class ValidateCodeController {
     public void createSmsCode(HttpServletRequest request, HttpServletResponse response)throws Exception{
         ValidateCode smsCode = smsCodeGenerator.generate(new ServletWebRequest(request));
         sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,smsCode);
-        //todo 发短信验证码
+        String mobile = ServletRequestUtils.getStringParameter(request,"mobile");
+        smsCodeSender.sender(mobile,smsCode.getCode());
     }
 }
