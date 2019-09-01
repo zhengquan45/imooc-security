@@ -2,9 +2,13 @@ package com.imooc.security.core.validate.code;
 
 import lombok.Data;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
+/**
+ * 验证码信息类
+ *
+ * @author zhengquan
+ */
 @Data
 public class ValidateCode {
     private String code;
@@ -20,7 +24,7 @@ public class ValidateCode {
         this.expireTime = expireTime;
     }
 
-    public boolean isExpried() {
+    public boolean isExpired() {
         return LocalDateTime.now().isAfter(expireTime);
     }
 }
