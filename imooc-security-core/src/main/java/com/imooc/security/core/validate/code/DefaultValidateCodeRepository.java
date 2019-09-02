@@ -5,9 +5,16 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.web.context.request.ServletWebRequest;
 
+/**
+ * 默认的验证码存储器(hutool timecache实现)
+ *
+ * @author zhengquan
+ */
 public class DefaultValidateCodeRepository implements  ValidateCodeRepository {
 
-    //30分钟的cache
+    /**
+     * 30分钟的cache
+     */
     private TimedCache<String, ValidateCode> cache = CacheUtil.newTimedCache(1800000);
 
     @Override
