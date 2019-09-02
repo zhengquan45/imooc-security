@@ -2,6 +2,7 @@ package com.imooc.security.browser;
 
 import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.imooc.security.core.properties.SecurityProperties;
+import com.imooc.security.core.validate.code.ValidateCodeFilter;
 import com.imooc.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
+/**
+ * @author zhengquan
+ */
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -59,10 +64,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.apply(validateCodeSecurityConfig)
-                .and()
-                .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.afterPropertiesSet();
+
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/authentication/require")
                 .loginProcessingUrl("/authentication/form")
@@ -75,11 +80,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require", "/code/*", "/index.html").permitAll()
+                .antMatchers("/authentication/require", "/code/*", "/resources/default-test-signIn.html").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable()
-                .apply(smsCodeAuthenticationSecurityConfig);
+                .csrf().disable();
     }
 }

@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author zhengquan
+ */
 @Slf4j
-@Component("ImoocAuthentionFailHandler")
-public class ImoocAuthentionFailHandler implements AuthenticationFailureHandler {
+@Component("ImoocAuthenticationFailHandler")
+public class ImoocAuthenticationFailHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("登录失败");
