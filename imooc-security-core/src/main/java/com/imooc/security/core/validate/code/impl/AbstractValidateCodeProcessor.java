@@ -7,9 +7,6 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import java.io.IOException;
-import java.util.Map;
-
 /**
  * 抽象图形验证码处理器
  *
@@ -19,7 +16,7 @@ import java.util.Map;
 public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
     @Autowired
-    private Map<String, ValidateCodeGenerator> generatorMap;
+    private ValidateCodeGeneratorHolder validateCodeGeneratorHolder;
 
     @Autowired
     private ValidateCodeRepository validateCodeRepository;
@@ -36,10 +33,9 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      *
      * @param request
      * @param validateCode
-     * @throws IOException
-     * @throws ServletRequestBindingException
+     * @throws Exception
      */
-    protected abstract void send(ServletWebRequest request, C validateCode) throws IOException, ServletRequestBindingException, Exception;
+    protected abstract void send(ServletWebRequest request, C validateCode) throws Exception;
 
     private void save(ServletWebRequest request, C validateCode) {
         ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
@@ -48,11 +44,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
     private C generate(ServletWebRequest request) {
         String type = getProcessorType(request).toString().toLowerCase();
-        String generatorName = type + "CodeGenerator";
-        ValidateCodeGenerator validateCodeGenerator = generatorMap.get(generatorName);
-        if (validateCodeGenerator == null) {
-            throw new ValidateCodeException(String.format("验证码生成器%s不存在", generatorName));
-        }
+        ValidateCodeGenerator validateCodeGenerator = validateCodeGeneratorHolder.findValidateCodeGenerator(type);
         return (C) validateCodeGenerator.generate(request);
     }
 
@@ -89,7 +81,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
             throw new ValidateCodeException(codeType + "验证码不存在");
         }
 
-        if (codeInSession.isExpried()) {
+        if (codeInSession.isExpired()) {
             validateCodeRepository.remove(request, codeType);
             throw new ValidateCodeException(codeType + "验证码已过期，请重新获取");
         }

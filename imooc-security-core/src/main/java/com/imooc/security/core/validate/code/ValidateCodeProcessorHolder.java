@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
+ * 验证码处理器集合
+ *
  * @author zhengquan
  * @date 2019/9/1
  */
@@ -16,6 +18,8 @@ public class ValidateCodeProcessorHolder {
     private Map<String, ValidateCodeProcessor> validateCodeProcessors;
 
     /**
+     * 根据验证码类型枚举查找处理器
+     *
      * @param type
      * @return
      */
@@ -24,6 +28,8 @@ public class ValidateCodeProcessorHolder {
     }
 
     /**
+     * 根据验证码类型查找处理器
+     *
      * @param type
      * @return
      */
