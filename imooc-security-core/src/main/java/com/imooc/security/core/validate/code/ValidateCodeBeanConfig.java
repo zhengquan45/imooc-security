@@ -43,4 +43,17 @@ public class ValidateCodeBeanConfig {
     public SmsCodeSender smsCodeSender() {
         return new DefaultSmsCodeSender();
     }
+
+
+    /**
+     * 验证码存储器
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(ValidateCodeRepository.class)
+    public ValidateCodeRepository validateCodeRepository() {
+        return new DefaultValidateCodeRepository();
+    }
+
 }

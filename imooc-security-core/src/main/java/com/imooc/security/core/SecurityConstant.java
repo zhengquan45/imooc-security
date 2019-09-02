@@ -45,4 +45,9 @@ public interface SecurityConstant {
      */
     String DEFAULT_PARAMETER_NAME_MOBILE="mobile";
 
+    /**
+     * 验证码存储的前缀
+     */
+    String VALIDATE_CODE_PREFIX = "VALIDATE_CODE_";
+
 }
