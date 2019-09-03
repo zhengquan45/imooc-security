@@ -33,7 +33,7 @@ public class ValidateCodeGeneratorHolder {
      * @return
      */
     public ValidateCodeGenerator findValidateCodeGenerator(String type) {
-        String name = StrUtil.replace(type.toLowerCase(), ValidateCodeGenerator.class.getSimpleName(), "Validate");
+        String name = StrUtil.replace(ValidateCodeGenerator.class.getSimpleName(), "Validate",type.toLowerCase());
         ValidateCodeGenerator generator = validateCodeGenerators.get(name);
         if (generator == null) {
             throw new ValidateCodeException("验证码生成器" + name + "不存在");

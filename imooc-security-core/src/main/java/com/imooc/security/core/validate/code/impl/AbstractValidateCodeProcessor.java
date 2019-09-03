@@ -37,7 +37,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      */
     protected abstract void send(ServletWebRequest request, C validateCode) throws Exception;
 
-    private void save(ServletWebRequest request, C validateCode) {
+    private void save(ServletWebRequest request, C validateCode)  throws Exception{
         ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
         validateCodeRepository.save(request, code, getProcessorType(request));
     }
@@ -55,12 +55,12 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @return
      */
     private ValidateCodeType getProcessorType(ServletWebRequest request) {
-        String type = StrUtil.subAfter(request.getRequest().getRequestURI(), "/", true);
+        String type = StrUtil.subAfter(request.getRequest().getRequestURI(), "/", true).toUpperCase();
         return ValidateCodeType.valueOf(type);
     }
 
     @Override
-    public void validate(ServletWebRequest request) {
+    public void validate(ServletWebRequest request) throws Exception{
         ValidateCodeType codeType = getProcessorType(request);
 
         C codeInSession = (C) validateCodeRepository.get(request, codeType);
