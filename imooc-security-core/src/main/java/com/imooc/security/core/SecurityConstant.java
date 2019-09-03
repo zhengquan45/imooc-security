@@ -44,10 +44,4 @@ public interface SecurityConstant {
      * 发送短信验证码 或 验证短信登录时,传递手机号的参数名称
      */
     String DEFAULT_PARAMETER_NAME_MOBILE="mobile";
-
-    /**
-     * 验证码存储的前缀
-     */
-    String VALIDATE_CODE_PREFIX = "VALIDATE_CODE_";
-
 }

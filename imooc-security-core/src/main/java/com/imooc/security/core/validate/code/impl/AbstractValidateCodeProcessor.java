@@ -37,31 +37,30 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      */
     protected abstract void send(ServletWebRequest request, C validateCode) throws Exception;
 
-    private void save(ServletWebRequest request, C validateCode)  throws Exception{
+    private void save(ServletWebRequest request, C validateCode) {
         ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
-        validateCodeRepository.save(request, code, getProcessorType(request));
+        validateCodeRepository.save(request, code, getValidateCodeType());
     }
 
     private C generate(ServletWebRequest request) {
-        String type = getProcessorType(request).toString().toLowerCase();
+        String type = getValidateCodeType().toString().toLowerCase();
         ValidateCodeGenerator validateCodeGenerator = validateCodeGeneratorHolder.findValidateCodeGenerator(type);
         return (C) validateCodeGenerator.generate(request);
     }
 
     /**
-     * 根据url获取校验码的类型
+     * Processor类型判断验证码类型
      *
-     * @param request
      * @return
      */
-    private ValidateCodeType getProcessorType(ServletWebRequest request) {
-        String type = StrUtil.subAfter(request.getRequest().getRequestURI(), "/", true).toUpperCase();
-        return ValidateCodeType.valueOf(type);
+    private ValidateCodeType getValidateCodeType() {
+        String type = StrUtil.subBefore(getClass().getSimpleName(), "CodeProcessor",true);
+        return ValidateCodeType.valueOf(type.toUpperCase());
     }
 
     @Override
-    public void validate(ServletWebRequest request) throws Exception{
-        ValidateCodeType codeType = getProcessorType(request);
+    public void validate(ServletWebRequest request){
+        ValidateCodeType codeType = getValidateCodeType();
 
         C codeInSession = (C) validateCodeRepository.get(request, codeType);
 

@@ -15,24 +15,24 @@ public interface ValidateCodeRepository {
      *
      * @param request
      * @param code
-     * @param validateCodeType
+     * @param type
      */
-    void save(ServletWebRequest request, ValidateCode code, ValidateCodeType validateCodeType);
+    void save(ServletWebRequest request, ValidateCode code, ValidateCodeType type);
 
     /**
      * 获取验证码
      *
      * @param request
-     * @param validateCodeType
+     * @param type
      * @return
      */
-    ValidateCode get(ServletWebRequest request, ValidateCodeType validateCodeType);
+    ValidateCode get(ServletWebRequest request, ValidateCodeType type);
 
     /**
      * 移除验证码
      *
      * @param request
-     * @param codeType
+     * @param type
      */
-    void remove(ServletWebRequest request, ValidateCodeType codeType);
+    void remove(ServletWebRequest request, ValidateCodeType type);
 }
