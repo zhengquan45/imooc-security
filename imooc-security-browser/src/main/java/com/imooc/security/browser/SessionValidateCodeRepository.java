@@ -8,6 +8,9 @@ import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
+/**
+ * @author Administrator
+ */
 @Component
 public class SessionValidateCodeRepository implements ValidateCodeRepository {
 
