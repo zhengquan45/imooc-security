@@ -2,6 +2,9 @@ package com.imooc.security.core.properties;
 
 import lombok.Getter;
 
+/**
+ * @author Administrator
+ */
 @Getter
 public class ImageCodeProperties extends SmsCodeProperties {
 
