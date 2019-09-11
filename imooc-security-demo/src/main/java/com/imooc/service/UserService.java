@@ -1,6 +1,5 @@
 package com.imooc.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.imooc.mapper.UserMapper;
 import com.imooc.param.UserQueryParam;
@@ -47,5 +46,9 @@ public class UserService {
 
     public void delete(Long id) {
         userMapper.deleteById(id);
+    }
+
+    public User loadUserByUsername(String username) {
+        return userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,username));
     }
 }

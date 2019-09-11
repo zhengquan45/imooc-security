@@ -3,6 +3,7 @@ package com.imooc.security.browser;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class ImoocAuthenticationSuccessHandler implements AuthenticationSuccessH
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
            log.info("登录成功");
            response.setContentType("application/json;charset=UTF-8");
-           response.getWriter().write(JSONUtil.toJsonStr(authentication));
+        User user = (User)authentication.getPrincipal();
+        response.getWriter().write(JSONUtil.toJsonStr(new SimpleResponse(user)));
     }
 }
