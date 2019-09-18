@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 /**
  * @author zhengquan
@@ -28,6 +29,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SpringSocialConfigurer springSocialConfigurer;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,6 +40,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.apply(validateCodeSecurityConfig)
                 .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(springSocialConfigurer)
                 .and()
                 .authorizeRequests()
                 .antMatchers(SecurityConstant.DEFAULT_UNAUTHENTICATION_URL,

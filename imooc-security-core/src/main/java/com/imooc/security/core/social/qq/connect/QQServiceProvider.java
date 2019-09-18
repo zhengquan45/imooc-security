@@ -1,21 +1,25 @@
 package com.imooc.security.core.social.qq.connect;
 
 import com.imooc.security.core.social.qq.api.QQ;
+import com.imooc.security.core.social.qq.api.QQimpl;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
-import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Template;
 
 /**
  * @author Administrator
  */
 public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
 
+    private String appId;
+    public static final String URL_AUTHORIZE = "https://graph.qq.com/oauth2.0/authorize";
+    public static final String URL_ACCESS_TOKEN = "https://graph.qq.com/oauth2.0/token";
 
-    public QQServiceProvider(OAuth2Operations oauth2Operations) {
-        super(oauth2Operations);
+    public QQServiceProvider(String appId,String appSecret) {
+        super(new OAuth2Template(appId,appSecret,URL_AUTHORIZE,URL_ACCESS_TOKEN));
     }
 
     @Override
     public QQ getApi(String accessToken) {
-        return null;
+        return new QQimpl(accessToken,appId);
     }
 }
