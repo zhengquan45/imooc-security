@@ -44,4 +44,6 @@ public class QQUserInfo {
      */
     private String gender;
 
+    private String openId;
+
 }
